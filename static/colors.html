@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        #output {
+            height: 100%;
+        }
+        .color {
+            float: left;
+            height: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="output"></div>
+<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+<script src="/static/js/mustache.js"></script>
+<script type="text/mustache" id="template">
+
+    {{#colors}}
+        <div class="color color-{{ color_name }}" style="background-color: {{ color_name }}; width: {{ color_percentage }}%;">
+            {{ color_percentage }}%
+        </div>
+    {{/colors}}
+
+</script>
+<script>
+
+    var socket = io('http://10.15.16.98');
+    var template = document.getElementById('template').innerHTML;
+    var output = document.getElementById('output');
+
+    var update = function (colors) {
+
+        output.innerHTML = Mustache.render(template, {
+            colors: colors
+        });
+
+    };
+
+    socket.on('colors-aggregate', update);
+
+
+</script>
+</body>
+</html>

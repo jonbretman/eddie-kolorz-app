@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 1em;
+            line-height: 1.5em;;
+        }
+
+        #output {
+            height: 100%;
+            padding: 1em;
+        }
+        .step {
+            padding: 1em;
+        }
+    </style>
+</head>
+<body>
+<div id="output"></div>
+<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+<script src="/static/js/mustache.js"></script>
+<script type="text/mustache" id="template">
+
+    <h2>Steps</h2>
+    {{#steps}}
+    <div class="step">
+        <img src="/static/img/{{ image }}">
+        <h3>{{ text }}</h3>
+    </div>
+    {{/steps}}
+
+    <h2>Colors</h2>
+    <ul>
+    {{#colors}}
+        <li>{{ color_name }} - {{ color_original }} - {{ color_percentage }}%</li>
+    {{/colors}}
+    </ul>
+
+
+</script>
+<script>
+
+    var socket = io('http://10.15.16.98');
+    var template = document.getElementById('template').innerHTML;
+    var output = document.getElementById('output');
+
+    var steps = [
+        {text: 'Original Image', image: '01-original.jpg'},
+        {text: 'Negate', image: '02-negate.jpg'},
+        {text: 'Edge Detect', image: '03-edge.jpg'},
+        {text: 'Threshold', image: '04-threshold.jpg'},
+        {text: 'Flood Fill', image: '05-fill.jpg'},
+        {text: 'Background Removal', image: '06-bg.jpg'},
+        {text: 'Map to cluster color space', image: '07-cluster-color-space.png'}
+    ];
+
+    var update = function (colors) {
+
+        output.innerHTML = Mustache.render(template, {
+            steps: JSON.parse(JSON.stringify(steps)).map(function (step) {
+                step.image = step.image + '?z=' + Math.floor((Math.random() * (Math.random() * 100)));
+                return step;
+            }),
+            colors: colors
+        });
+
+    };
+
+    socket.on('colors-instance', update);
+
+
+</script>
+</body>
+</html>

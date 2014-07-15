@@ -1,5 +1,5 @@
 var Hapi = require('hapi');
-var server = new Hapi.Server('localhost', 3000);
+var server = new Hapi.Server('10.15.16.98', 3000);
 var io = require('socket.io').listen(server.listener);
 
 // serve the static files
@@ -19,23 +19,23 @@ server.route({
     path: '/',
     handler: function (request, reply) {
 
-        var data;
+        var colorsAggregate = request.payload.colors_aggregate;
+        var colorsInstance = request.payload.colors_instance;
 
-        try {
-            // no idea what is going on here....
-            data = JSON.parse(Object.keys(request.payload)[0]);
-        }
-        catch (e) {
-            console.log('Bad request:', request.payload);
-            reply(Hapi.error.badRequest());
-            return;
-        }
+        console.log('payload', request.payload);
 
         // send back 200 ok
         reply();
 
-        // push data to client
-        io.emit('data', data);
+        if (Array.isArray(colorsAggregate)) {
+            console.log('Received aggregate colors', colorsAggregate);
+            io.emit('colors-aggregate', colorsAggregate);
+        }
+
+        if (Array.isArray(colorsInstance)) {
+            console.log('Received instance colors', colorsInstance);
+            io.emit('colors-instance', colorsInstance);
+        }
     }
 });
 
