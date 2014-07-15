@@ -1,5 +1,5 @@
 var Hapi = require('hapi');
-var server = new Hapi.Server('10.15.16.98', 3000);
+var server = new Hapi.Server('localhost', 3000);
 var io = require('socket.io').listen(server.listener);
 
 // serve the static files
