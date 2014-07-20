@@ -183,12 +183,9 @@
             return a + b.color_percentage;
         }, 0);
 
-        var cleanColors = colors.map(function(currentValue){
+        colors.map(function(currentValue){
             currentValue.color_percentage = currentValue.color_percentage + ((100 - totalColorPercentages) / colors.length);
-            return currentValue;
         });
-
-        console.log("Clean Colors", cleanColors);
 
         output.innerHTML = Mustache.render(template, {
             steps: JSON.parse(JSON.stringify(steps)).map(function (step) {
