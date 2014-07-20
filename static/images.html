@@ -2,21 +2,104 @@
 <html>
 <head>
     <style>
+        @font-face {
+            font-family: 'Proxima Regular';
+            src: url('/static/fonts/proximanova-regular-webfont.eot?') format('eot'),
+                 url('/static/fonts/proximanova-regular-webfont.woff') format('woff'),
+                 url('/static/fonts/proximanova-regular-webfont.ttf') format('truetype'),
+                 url('/static/fonts/proximanova-regular-webfont.svg#proxima_nova_regular') format('svg');
+            font-weight: normal;
+            font-style: normal;
+
+        }
+
+        @font-face {
+            font-family: 'Proxima Bold';
+            src: url('/static/fonts/proximanova-semibold-webfont.eot?') format('eot'),
+                 url('/static/fonts/proximanova-semibold-webfont.woff') format('woff'),
+                 url('/static/fonts/proximanova-semibold-webfont.ttf') format('truetype'),
+                 url('/static/fonts/proximanova-semibold-webfont.svg#proxima_nova_semibold') format('svg');
+            font-weight: bold;
+            font-style: normal;
+
+        }
+
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-            font-size: 1em;
-            line-height: 1.5em;;
+            font-family: 'Proxima Regular';
+            font-size: 15px;
         }
 
         #output {
-            height: 100%;
-            padding: 1em;
+
         }
+
+        .steps {
+            background: rgba(0,0,0,0.85);
+            overflow: hidden;
+            height:420px;
+            border-left: 2px solid #FFF;
+            border-top: 2px solid #FFF;
+            border-bottom: 2px solid #FFF;
+            border-top: 2px solid #FFF;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1200;
+        }
+
         .step {
-            padding: 1em;
+            width: 14.285714286%;
+            height: 100%;
+            box-sizing: border-box;
+            border-right: 2px solid #FFF;
+            float: left;
+        }
+
+        .step img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 2px solid #FFF;
+        }
+
+        .info-card {
+            font-size: 12px;
+            padding: 20px;
+            color: #FFF;
+            z-index: 1200;
+        }
+
+        h1 {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Proxima Bold';
+            margin: 0;
+            font-size: 13px;
+        }
+
+        p {
+            font-size: 13px;
+        }
+
+        .colors {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-left: 2px solid #FFF;
+            border-right: 2px solid #FFF;
+            border-bottom: 2px solid #FFF;
+        }
+
+        .color {
+            float: left;
+            height: 100%;
         }
     </style>
 </head>
@@ -26,20 +109,27 @@
 <script src="/static/js/mustache.js"></script>
 <script type="text/mustache" id="template">
 
-    <h2>Steps</h2>
-    {{#steps}}
-    <div class="step">
-        <img src="/static/img/{{ image }}">
-        <h3>{{ text }}</h3>
+    <div class="steps">
+        {{#steps}}
+        <div class="step">
+            <!-- <img src="/static/img/{{ image }}"> -->
+            <img src="http://placehold.it/1000x1250">
+            <div class="info-card">
+                <h1>{{ title }}</h1>
+                <p>{{ text }}</p>
+            </div>
+        </div>
+        {{/steps}}
     </div>
-    {{/steps}}
 
-    <h2>Colors</h2>
-    <ul>
-    {{#colors}}
-        <li>{{ color_name }} - {{ color_original }} - {{ color_percentage }}%</li>
-    {{/colors}}
-    </ul>
+
+    <div class="colors">
+        {{#colors}}
+            <div class="color color-{{ color_name }}" style="background-color: {{ color_original }}; width: {{ color_percentage }}%;" ></div>
+        {{/colors}}
+    </div>
+
+
 
 
 </script>
@@ -50,16 +140,55 @@
     var output = document.getElementById('output');
 
     var steps = [
-        {text: 'Original Image', image: '01-original.jpg'},
-        {text: 'Negate', image: '02-negate.jpg'},
-        {text: 'Edge Detect', image: '03-edge.jpg'},
-        {text: 'Threshold', image: '04-thresh.jpg'},
-        {text: 'Flood Fill', image: '05-fill.jpg'},
-        {text: 'Background Removal', image: '06-bg.png'},
-        {text: 'Map to cluster color space', image: '07-cluster-color-space.png'}
+        {
+            title: 'Original Image',
+            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            image: '01-original.jpg'
+        },
+        {
+            title: 'Negate',
+            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            image: '02-negate.jpg'
+        },
+        {
+            title: 'Edge Detect',
+            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            image: '03-edge.jpg'
+        },
+        {
+            title: 'Threshold',
+            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            image: '04-thresh.jpg'
+        },
+        {
+            title: 'Flood Fill',
+            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            image: '05-fill.jpg'
+        },
+        {
+            title: 'Background Removal',
+            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            image: '06-bg.png'
+        },
+        {
+            title: 'Map to cluster color space',
+            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            image: '07-cluster-color-space.png'
+        }
     ];
 
-    var update = function (colors) {
+    function update (colors) {
+
+        var totalColorPercentages = colors.reduce(function(a, b) {
+            return a + b.color_percentage;
+        }, 0);
+
+        var cleanColors = colors.map(function(currentValue){
+            currentValue.color_percentage = currentValue.color_percentage + ((100 - totalColorPercentages) / colors.length);
+            return currentValue;
+        });
+
+        console.log("Clean Colors", cleanColors);
 
         output.innerHTML = Mustache.render(template, {
             steps: JSON.parse(JSON.stringify(steps)).map(function (step) {
