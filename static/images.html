@@ -47,6 +47,8 @@
             top: 0;
             left: 0;
             z-index: 1200;
+            box-sizing: border-box;
+            width: 100%;
         }
 
         .step {
@@ -67,6 +69,7 @@
         .info-card {
             font-size: 12px;
             padding: 20px;
+            height: 80px;
             color: #FFF;
             z-index: 1200;
         }
@@ -76,11 +79,12 @@
             letter-spacing: 1px;
             font-family: 'Proxima Bold';
             margin: 0;
-            font-size: 13px;
+            font-size: 15px;
         }
 
         p {
-            font-size: 13px;
+            font-size: 15px;
+            line-height: 22px;
         }
 
         .colors {
@@ -140,37 +144,37 @@
     var steps = [
         {
             title: 'Original Image',
-            text: '',
+            text: 'The starting image.',
             image: '01-original.jpg'
         },
         {
             title: 'Negate',
-            text: 'Inverse colors for better edge detection',
+            text: 'Inverse colors for better edge detection.',
             image: '02-negate.jpg'
         },
         {
             title: 'Edge Detect',
-            text: 'Pick out main shape',
+            text: 'Pick out main shape.',
             image: '03-edge.jpg'
         },
         {
             title: 'Threshold',
-            text: 'Enhance the edges',
+            text: 'Enhance the edges.',
             image: '04-thresh.jpg'
         },
         {
             title: 'Flood Fill',
-            text: 'Fill with a color we can easily remove',
+            text: 'Fill with a color we can easily remove.',
             image: '05-fill.jpg'
         },
         {
             title: 'Background Removal',
-            text: 'Remove the magenta flood fill',
+            text: 'Remove the magenta flood fill.',
             image: '06-bg.png'
         },
         {
             title: 'Map to cluster color space',
-            text: 'Use clustering to map the image to a reduced color pallet',
+            text: 'Use clustering to map the image to a reduced color pallete.',
             image: '07-cluster-color-space.png'
         }
     ];
