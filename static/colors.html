@@ -2,31 +2,116 @@
 <html>
 <head>
     <style>
+        @font-face {
+            font-family: 'Proxima Regular';
+            src: url('/static/fonts/proximanova-regular-webfont.eot?') format('eot'),
+                 url('/static/fonts/proximanova-regular-webfont.woff') format('woff'),
+                 url('/static/fonts/proximanova-regular-webfont.ttf') format('truetype'),
+                 url('/static/fonts/proximanova-regular-webfont.svg#proxima_nova_regular') format('svg');
+            font-weight: normal;
+            font-style: normal;
+
+        }
+
+        @font-face {
+            font-family: 'Proxima Bold';
+            src: url('/static/fonts/proximanova-semibold-webfont.eot?') format('eot'),
+                 url('/static/fonts/proximanova-semibold-webfont.woff') format('woff'),
+                 url('/static/fonts/proximanova-semibold-webfont.ttf') format('truetype'),
+                 url('/static/fonts/proximanova-semibold-webfont.svg#proxima_nova_semibold') format('svg');
+            font-weight: bold;
+            font-style: normal;
+
+        }
+
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
+            font-family: 'Proxima Regular';
+            font-size: 15px;
         }
+
         #output {
+            overflow:hidden;
+            width: 100%;
             height: 100%;
         }
-        .color {
+
+        .color-bar {
+            position: relative;
+            width: 100%;
+
+        }
+
+        .color-bar.expand-on-hover {
+            -webkit-transition: all 500ms ease 100ms;
+        }
+
+        .percentage {
+            width: 50px;
             float: left;
-            height: 100%;
-            text-align: center;
+            line-heigth: 20px;
+            font-size: 20px;
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            letter-spacing: 2px;
+            opacity: 0;
         }
+
+        .color-bar.expand-on-hover:hover {
+            height: 58px !important; /* Eddie totally did this. */
+        }
+
+        .color-bar:hover .percentage {
+            opacity: 1;
+        }
+
+        .info-card {
+            width: 400px;
+            padding: 30px;
+            position: fixed;
+            font-size: 12px;
+            top: 50px;
+            right: 50px;
+            background: rgba(0,0,0,0.85);
+            color: #FFF;
+            z-index: 1200;
+        }
+
+        h1 {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Proxima Bold';
+            margin: 0;
+            font-size: 15px;
+        }
+
+        p {
+            font-size: 13px;
+        }
+
+
     </style>
 </head>
 <body>
+<div class="info-card">
+    <h1>What are people wearing?</h1>
+    <p>Donec id elit non mi porta gravida at eget metus. Donec ullamcorper nulla non metus auctor fringilla.</p>
+    <p>Nulla non metid elit non mi porta gravidaus. Done at eget met us auctor fringilla.</p>
+</div>
+
 <div id="output"></div>
 <script src="/static/js/socketio.js"></script>
 <script src="/static/js/mustache.js"></script>
 <script type="text/mustache" id="template">
 
     {{#colors}}
-        <div class="color color-{{ color_name }}" style="background-color: {{ color_name }}; width: {{ color_percentage }}%;">
-            {{ color_percentage }}%
+        <div class="color-bar {{ expand_on_hover }}" style="background-color: #{{ hex_color }}; height: {{ percentage }}%;">
+            <div class="percentage" style="color: {{ percentage_color }}">{{ percentage }}%</div>
         </div>
+
     {{/colors}}
 
 </script>
@@ -35,13 +120,37 @@
     var socket = io('http://localhost');
     var template = document.getElementById('template').innerHTML;
     var output = document.getElementById('output');
+    var numberOfColors = 9;
+    var colorMap = {
+        'brown'  : '514040',
+        'grey'   : '848484',
+        'yellow' : 'fff03b',
+        'purple' : 'a574b9',
+        'blue'   : '4b6ec8',
+        'white'  : 'ffffff',
+        'red'    : 'e85757',
+        'green'  : '5db75e',
+        'black'  : '000000'
+    }
+
 
     var update = function (colors) {
 
-        output.innerHTML = Mustache.render(template, {
-            colors: colors
+        var cleanColors = [];
+
+        colors.forEach(function(color, index){
+            cleanColors.push({
+                percentage : color.color_percentage.toFixed(2),
+                expand_on_hover : (window.innerHeight * (color.color_percentage/100) < 60) ? 'expand-on-hover' : '',
+                hex_color : colorMap[color.color_name],
+                percentage_color : (parseInt(colorMap[color.color_name], 16) > 0xffffff/2) ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.5)'
+            });
+
         });
 
+        output.innerHTML = Mustache.render(template, {
+            colors: cleanColors
+        });
     };
 
     socket.on('colors-aggregate', update);
