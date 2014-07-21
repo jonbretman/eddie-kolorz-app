@@ -39,7 +39,6 @@
         .steps {
             background: rgba(0,0,0,0.85);
             overflow: hidden;
-            height:420px;
             border-left: 2px solid #FFF;
             border-top: 2px solid #FFF;
             border-bottom: 2px solid #FFF;
@@ -112,8 +111,7 @@
     <div class="steps">
         {{#steps}}
         <div class="step">
-            <!-- <img src="/static/img/{{ image }}"> -->
-            <img src="http://placehold.it/1000x1250">
+            <img src="/static/img/{{ image }}">
             <div class="info-card">
                 <h1>{{ title }}</h1>
                 <p>{{ text }}</p>
@@ -142,37 +140,37 @@
     var steps = [
         {
             title: 'Original Image',
-            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            text: '',
             image: '01-original.jpg'
         },
         {
             title: 'Negate',
-            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            text: 'Inverse colors for better edge detection',
             image: '02-negate.jpg'
         },
         {
             title: 'Edge Detect',
-            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            text: 'Pick out main shape',
             image: '03-edge.jpg'
         },
         {
             title: 'Threshold',
-            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            text: 'Enhance the edges',
             image: '04-thresh.jpg'
         },
         {
             title: 'Flood Fill',
-            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            text: 'Fill with a color we can easily remove',
             image: '05-fill.jpg'
         },
         {
             title: 'Background Removal',
-            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            text: 'Remove the magenta flood fill',
             image: '06-bg.png'
         },
         {
             title: 'Map to cluster color space',
-            text: 'Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor.',
+            text: 'Use clustering to map the image to a reduced color pallet',
             image: '07-cluster-color-space.png'
         }
     ];
